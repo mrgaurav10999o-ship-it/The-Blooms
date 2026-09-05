@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE BLOOM — Handmade Flowers, Keychains & DIY Kits</title>
+    <meta name="description" content="Handmade blooms, little keepsakes & creative kits — made slowly, thoughtfully, and with love.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-cream: #FAF7F2;
+            --surface-white: #FFFFFF;
+            --sage-green: #8A9A86;
+            --sage-light: #F0F3EF;
+            --dusty-rose: #D8A798;
+            --muted-brown: #5C4A42;
+            --text-dark: #2C2523;
+            --text-muted: #7A6F6B;
+            --border-color: #E8E2D9;
+            --font-serif: 'Cormorant Garamond', Georgia, serif;
+            --font-sans: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            --transition: all 0.3s ease;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        a { color: inherit; text-decoration: none; }
+        button { cursor: pointer; border: none; background: none; font-family: inherit; }
+        img { max-width: 100%; height: auto; display: block; object-fit: cover; }
+
+        .announcement-bar {
+            background-color: var(--muted-brown);
+            color: var(--bg-cream);
+            text-align: center;
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+        }
+
+        .navbar {
+            position: sticky; top: 0;
+            background-color: rgba(250, 247, 242, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 24px;
+        }
+
+        .nav-container {
+            max-width: 1200px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .brand-logo { font-family: var(--font-serif); font-size: 1.8rem; font-weight: 600; letter-spacing: 0.1em; }
+
+        .cart-icon-btn { position: relative; padding: 8px; font-size: 1.1rem; }
+        .cart-badge {
+            position: absolute; top: 2px; right: -2px;
+            background-color: var(--dusty-rose); color: white;
+            font-size: 0.7rem; font-weight: 600; width: 18px; height: 18px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+        }
+
+        .section { padding: 60px 24px; max-width: 1200px; margin: 0 auto; }
+        .section-title { font-family: var(--font-serif); font-size: 2.5rem; text-align: center; margin-bottom: 12px; }
+        .section-subtitle { text-align: center; color: var(--text-muted); margin-bottom: 40px; }
+
+        .btn { display: inline-block; padding: 12px 24px; border-radius: 4px; font-size: 0.9rem; font-weight: 500; transition: var(--transition); text-align: center; }
+        .btn-primary { background-color: var(--muted-brown); color: var(--bg-cream); width: 100%; }
+        .btn-primary:hover { background-color: var(--text-dark); }
+        .btn-whatsapp { background-color: #25D366; color: white; width: 100%; font-weight: 600; padding: 14px; font-size: 1rem; border-radius: 6px; }
+        .btn-whatsapp:hover { background-color: #1EBE57; }
+
+        .hero { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; padding: 60px 24px; max-width: 1200px; margin: 0 auto; }
+        .hero-content h1 { font-family: var(--font-serif); font-size: 3.5rem; line-height: 1.1; margin-bottom: 16px; }
+        .hero-tagline { font-family: var(--font-serif); font-style: italic; font-size: 1.3rem; color: var(--sage-green); margin-bottom: 16px; }
+        .hero-image-wrapper { border-radius: 12px; overflow: hidden; aspect-ratio: 4/5; }
+
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; }
+        .product-card { background: var(--surface-white); border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); display: flex; flex-direction: column; }
+        .product-img-box { width: 100%; aspect-ratio: 1/1; overflow: hidden; background: #F2EFEA; }
+        .product-info { padding: 16px; display: flex; flex-direction: column; flex-grow: 1; }
+        .product-title { font-family: var(--font-serif); font-size: 1.2rem; margin-bottom: 8px; }
+        .product-price { font-weight: 600; color: var(--muted-brown); margin-bottom: 12px; }
+
+        .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1000; display: none; }
+        .cart-overlay.open { display: block; }
+        .cart-drawer { position: fixed; top: 0; right: -420px; width: 100%; max-width: 400px; height: 100%; background: var(--surface-white); z-index: 1001; transition: right 0.3s; display: flex; flex-direction: column; padding: 24px; }
+        .cart-drawer.open { right: 0; }
+        .cart-header { display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 16px; }
+        .cart-items { flex-grow: 1; overflow-y: auto; padding: 16px 0; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-color); }
+        .cart-item-remove { color: #d9534f; font-size: 0.8rem; cursor: pointer; margin-left: 8px; }
+
+        footer { background-color: var(--muted-brown); color: var(--bg-cream); padding: 40px 24px 20px; margin-top: 60px; text-align: center; }
+
+        @media (max-width: 768px) {
+            .hero { grid-template-columns: 1fr; text-align: center; }
+            .product-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="announcement-bar">Handmade with care • Thoughtfully packed • Made to bloom</div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="brand-logo">THE BLOOM</a>
+            <button class="cart-icon-btn" onclick="toggleCart()">🛒 <span class="cart-badge" id="cartBadge">0</span></button>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>THE BLOOM</h1>
+            <p class="hero-tagline">“Made by hand. Made to bloom.”</p>
+            <p style="color: var(--text-muted); margin-bottom: 24px;">Handmade blooms, little keepsakes & creative kits — made slowly, thoughtfully, and with love.</p>
+            <a href="#shop" class="btn btn-primary" style="width: auto;">SHOP COLLECTION</a>
+        </div>
+        <div class="hero-image-wrapper">
+            <img src="./3.jpeg" alt="THE BLOOM Bouquet">
+        </div>
+    </section>
+
+    <section id="shop" class="section">
+        <h2 class="section-title">Our Collection</h2>
+        <p class="section-subtitle">Explore handcrafted flowers, keepsakes, and DIY kits.</p>
+        <div class="product-grid" id="productGrid"></div>
+    </section>
+
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <button onclick="toggleCart()">✕</button>
+        </div>
+        <div class="cart-items" id="cartItemsContainer"></div>
+        <div style="border-top: 1px solid var(--border-color); padding-top: 16px;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-weight:600; font-size:1.1rem;">
+                <span>Total:</span>
+                <span id="cartTotal">₹0</span>
+            </div>
+            <button class="btn btn-whatsapp" onclick="sendWhatsAppOrder()">📲 Order on WhatsApp</button>
+        </div>
+    </div>
+
+    <footer>
+        <h3 style="font-family: var(--font-serif);">THE BLOOM</h3>
+        <p>© THE BLOOM. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const STORE_CONFIG = {
+            whatsappNumber: "917011396842"
+        };
+
+        const PRODUCTS = [
+            { id: 1, name: "Coffee Cup Keychain", category: "Keychains", price: 299, image: "./1.jpeg" },
+            { id: 2, name: "Cherry Keychain", category: "Keychains", price: 249, image: "./2.jpeg" },
+            { id: 3, name: "Mixed Flower Bouquet", category: "Flowers", price: 899, image: "./3.jpeg" },
+            { id: 4, name: "DIY Flower Making Kit", category: "DIY Kits", price: 649, image: "./4.jpeg" },
+            { id: 5, name: "Bee Keychain", category: "Keychains", price: 279, image: "./5.jpeg" },
+            { id: 6, name: "Mini Rose Pots", category: "Flowers", price: 499, image: "./6.jpeg" },
+            { id: 7, name: "Strawberry Flower Keychain", category: "Keychains", price: 299, image: "./7.jpeg" },
+            { id: 8, name: "Daisy Flower Keychain", category: "Keychains", price: 249, image: "./8.jpeg" }
+        ];
+
+        let cart = [];
+
+        document.addEventListener('DOMContentLoaded', () => { renderProducts(); });
+
+        function renderProducts() {
+            const container = document.getElementById('productGrid');
+            container.innerHTML = PRODUCTS.map(p => `
+                <div class="product-card">
+                    <div class="product-img-box"><img src="${p.image}" alt="${p.name}"></div>
+                    <div class="product-info">
+                        <h3 class="product-title">${p.name}</h3>
+                        <div class="product-price">₹${p.price}</div>
+                        <button class="btn btn-primary" onclick="addToCart(${p.id})">Add to Cart</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addToCart(id) {
+            const prod = PRODUCTS.find(p => p.id === id);
+            cart.push(prod);
+            updateCartUI();
+            toggleCart(true);
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            document.getElementById('cartBadge').innerText = cart.length;
+            const container = document.getElementById('cartItemsContainer');
+            const total = cart.reduce((acc, item) => acc + item.price, 0);
+            document.getElementById('cartTotal').innerText = `₹${total}`;
+
+            if(cart.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:var(--text-muted); margin-top:20px;">Your cart is empty</p>';
+                return;
+            }
+
+            container.innerHTML = cart.map((item, idx) => `
+                <div class="cart-item">
+                    <div>
+                        <strong>${item.name}</strong><br>
+                        <small style="color:var(--text-muted);">₹${item.price}</small>
+                    </div>
+                    <span class="cart-item-remove" onclick="removeFromCart(${idx})">✕ Remove</span>
+                </div>
+            `).join('');
+        }
+
+        function toggleCart(open) {
+            const drawer = document.getElementById('cartDrawer');
+            const overlay = document.getElementById('cartOverlay');
+            if (open === undefined) {
+                drawer.classList.toggle('open');
+                overlay.classList.toggle('open');
+            } else {
+                drawer.classList.toggle('open', open);
+                overlay.classList.toggle('open', open);
+            }
+        }
+
+        function sendWhatsAppOrder() {
+            if(cart.length === 0) { 
+                alert('Aapka cart khaali hai!'); 
+                return; 
+            }
+            const total = cart.reduce((acc, item) => acc + item.price, 0);
+            const itemsList = cart.map((item, i) => `${i + 1}. ${item.name} - ₹${item.price}`).join('\n');
+            
+            const message = `Hello THE BLOOM! 👋\n\nI would like to place an order:\n\n${itemsList}\n\n*Total Amount:* ₹${total}\n\nPlease share payment details (UPI/QR) to confirm my order.`;
+            
+            const encodedMsg = encodeURIComponent(message);
+            window.open(`https://wa.me/${STORE_CONFIG.whatsappNumber}?text=${encodedMsg}`, '_blank');
+        }
+    </script>
+</body>
+</html>
